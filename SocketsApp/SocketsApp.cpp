@@ -5,6 +5,8 @@ SocketsApp::SocketsApp(QWidget *parent)
 {
 	ui.setupUi(this);
 	connectButtons();
+	selection = 0;
+	
 }
 
 
@@ -22,6 +24,7 @@ void SocketsApp::getHostFromIP()
 {
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true);
+	selection = 1;
 	qDebug() << "Host from IP";
 }
 
@@ -29,6 +32,7 @@ void SocketsApp::getIPFromHost()
 {
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true);
+	selection = 2;
 	qDebug() << "Host from IP";
 }
 
@@ -36,6 +40,7 @@ void SocketsApp::getPortFromService()
 {
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true);
+	selection = 3;
 	qDebug() << "Host from IP";
 }
 
@@ -43,6 +48,7 @@ void SocketsApp::getServiceFromPort()
 {
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true);
+	selection = 4;
 	qDebug() << "Host from IP";
 }
 
@@ -57,8 +63,30 @@ void SocketsApp::okClicked()
 {
 	buttonsAndEditsUsable(false);
 	//Check which action is active, then perform necessary lookups
+	switch (selection)
+	{
+	case 1:
+		//Get host from IP
+		break;
+
+	case 2:
+		//Get IP from Host
+		break;
+
+	case 3:
+		//Get port from service
+		break;
+
+	case 4:
+		//Get service from port
+		break;
+
+	default:
+		break;
+	}
 
 	//display lookups in textedit
+	ui.outputField->append("Lookup Performed");
 
 	ui.input1->setText("");
 	ui.input2->setText("");

@@ -30,4 +30,5 @@ private:
 	Ui::SocketsAppClass ui;
 	inline void connectButtons();
 	void buttonsAndEditsUsable(bool yes);
+	int selection;
 };
