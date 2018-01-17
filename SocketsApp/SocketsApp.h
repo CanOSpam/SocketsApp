@@ -4,7 +4,9 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
+#include <string>
 #include <WinSock2.h>
+#pragma comment(lib, "ws2_32.lib")
 
 //Remove for final
 #include <QDebug>
@@ -29,6 +31,7 @@ public slots:
 private:
 	Ui::SocketsAppClass ui;
 	inline void connectButtons();
-	void buttonsAndEditsUsable(bool yes);
+	void buttonsAndEditsUsable(bool yes, int num);
+	void setActions(bool flag);
 	int selection;
 };
