@@ -17,8 +17,8 @@ SocketsApp::SocketsApp(QWidget *parent)
 
 inline void SocketsApp::connectButtons()
 {
-	connect(ui.actionHost_to_IP, &QAction::triggered, this, &SocketsApp::getHostFromIP);
-	connect(ui.actionIP_to_Host, &QAction::triggered, this, &SocketsApp::getIPFromHost);
+	connect(ui.actionIP_to_Host, &QAction::triggered, this, &SocketsApp::getHostFromIP);
+	connect(ui.actionHost_to_IP, &QAction::triggered, this, &SocketsApp::getIPFromHost);
 	connect(ui.actionService_to_Port, &QAction::triggered, this, &SocketsApp::getPortFromService);
 	connect(ui.actionPort_to_Service, &QAction::triggered, this, &SocketsApp::getServiceFromPort);
 	connect(ui.ok_button, &QPushButton::clicked, this, &SocketsApp::okClicked);
@@ -30,6 +30,7 @@ void SocketsApp::getHostFromIP()
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true, 1);
 	setActions(false);
+	ui.input1->setText("Dotted IP");
 	selection = 1;
 	qDebug() << "Host from IP";
 }
@@ -39,6 +40,7 @@ void SocketsApp::getIPFromHost()
 	//Make buttons clickable and lineedits not readonly
 	buttonsAndEditsUsable(true, 1);
 	setActions(false);
+	ui.input1->setText("Host Name");
 	selection = 2;
 	qDebug() << "Host from IP";
 }
@@ -86,6 +88,11 @@ void SocketsApp::okClicked()
 	
 	int s_port;
 	struct servent *sv;
+	int		a;
+	struct	hostent *hp;
+	struct	in_addr my_addr, *addr_p;
+	char	**p;
+	char	ip_address[256];
 
 
 	// Open up a Winsock v2.2 session
@@ -96,10 +103,93 @@ void SocketsApp::okClicked()
 	{
 	case 1:
 		//Get host from IP
+		addr_p = (struct in_addr*)malloc(sizeof(struct in_addr));
+		addr_p = &my_addr;
+
+		if ((a = inet_addr(arg1.toStdString().c_str())) == 0)
+		{
+			result = ("IP Address must be of the form x.x.x.x\n");
+			break;
+		}
+
+		// Copy IP address  into ip_address
+		strcpy(ip_address, arg1.toStdString().c_str());
+		addr_p->s_addr = inet_addr(ip_address);
+
+
+		hp = gethostbyaddr((char *)addr_p, PF_INET, sizeof(my_addr));
+
+		if (hp == NULL)
+		{
+			result = "host information for " + arg1 + " not found";
+			result.append('\n');
+			break;
+		}
+		result = "";
+		for (p = hp->h_addr_list; *p != 0; p++)
+		{
+			struct in_addr in;
+			char **q;
+
+			memcpy(&in.s_addr, *p, sizeof(in.s_addr));
+			result.append("IP Address: " + QString(inet_ntoa(in)) + "\nHost Name: "+ hp->h_name);
+			result.append('\n');
+			result.append("Aliases: \n");
+			for (q = hp->h_aliases; *q != 0; q++)
+			{
+				result.append("\t" + QString(*q) + "\n");
+			}
+			result.append('\n');
+		}
+
+
 		break;
 
 	case 2:
 		//Get IP from Host
+		addr_p = (struct in_addr*)malloc(sizeof(struct in_addr));
+		addr_p = &my_addr;
+
+		if ((hp = gethostbyname(arg1.toStdString().c_str())) == NULL) 	// Host name?
+		{
+			result = "";
+			switch (h_errno)
+			{
+			case HOST_NOT_FOUND:
+				result.append("No such host " + arg1 + "\n");
+				break;
+			case TRY_AGAIN:
+				result.append("host " + arg1 + " try again later\n");
+				break;
+			case NO_RECOVERY:
+				result.append("host " + arg1 + " DNS Error\n");
+				break;
+			case NO_ADDRESS:
+				result.append("No IP Address for " + arg1 + "\n");
+				break;
+			default:
+				result.append("Unknown Error:  " + QString::number(h_errno) + "\n");
+				break;
+			}
+		}
+		else
+		{
+			result = "";
+			for (p = hp->h_addr_list; *p != 0; p++)
+			{
+				struct in_addr in;
+				char **q;
+
+				memcpy(&in.s_addr, *p, sizeof(in.s_addr));
+				result.append("IP Address: "+ QString(inet_ntoa(in)) +"\t Host Name: " + QString(hp->h_name) + "\n");
+
+				for (q = hp->h_aliases; *q != 0; q++)
+				{
+					result.append("\t   Aliases: " + QString(*q) + "\n");
+				}
+				result.append('\n');
+			}
+		}
 
 		break;
 
@@ -115,6 +205,7 @@ void SocketsApp::okClicked()
 			result = "The port number for " + arg1 + " is ";
 			result.append(QString::number(ntohs(sv->s_port)));
 		}
+		result.append('\n');
 		
 		break;
 
@@ -131,6 +222,7 @@ void SocketsApp::okClicked()
 		{
 			result = "The service for " + arg2 + " port " + QString::number(s_port) + " is " + sv->s_name;
 		}
+		result.append('\n');
 		
 		break;
 
