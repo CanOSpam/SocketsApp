@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'SocketsApp.ui'
 **
-** Created by: Qt User Interface Compiler version 5.6.2
+** Created by: Qt User Interface Compiler version 5.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -137,25 +137,25 @@ public:
 
     void retranslateUi(QMainWindow *SocketsAppClass)
     {
-        SocketsAppClass->setWindowTitle(QApplication::translate("SocketsAppClass", "SocketsApp", 0));
-        actionHost_to_IP->setText(QApplication::translate("SocketsAppClass", "Host to IP", 0));
+        SocketsAppClass->setWindowTitle(QApplication::translate("SocketsAppClass", "SocketsApp", Q_NULLPTR));
+        actionHost_to_IP->setText(QApplication::translate("SocketsAppClass", "Host to IP", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        actionHost_to_IP->setToolTip(QApplication::translate("SocketsAppClass", "Translate a host name to an IP address", 0));
+        actionHost_to_IP->setToolTip(QApplication::translate("SocketsAppClass", "Translate a host name to an IP address", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        actionIP_to_Host->setText(QApplication::translate("SocketsAppClass", "IP to Host", 0));
+        actionIP_to_Host->setText(QApplication::translate("SocketsAppClass", "IP to Host", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        actionIP_to_Host->setToolTip(QApplication::translate("SocketsAppClass", "Translate an IP to a host name", 0));
+        actionIP_to_Host->setToolTip(QApplication::translate("SocketsAppClass", "Translate an IP to a host name", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        actionService_to_Port->setText(QApplication::translate("SocketsAppClass", "Service to Port", 0));
+        actionService_to_Port->setText(QApplication::translate("SocketsAppClass", "Service to Port", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        actionService_to_Port->setToolTip(QApplication::translate("SocketsAppClass", "Translate a service/protocal to a port number", 0));
+        actionService_to_Port->setToolTip(QApplication::translate("SocketsAppClass", "Translate a service/protocal to a port number", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        actionPort_to_Service->setText(QApplication::translate("SocketsAppClass", "Port to Service", 0));
+        actionPort_to_Service->setText(QApplication::translate("SocketsAppClass", "Port to Service", Q_NULLPTR));
 #ifndef QT_NO_TOOLTIP
-        actionPort_to_Service->setToolTip(QApplication::translate("SocketsAppClass", "Translate a port or protocol to a service", 0));
+        actionPort_to_Service->setToolTip(QApplication::translate("SocketsAppClass", "Translate a port or protocol to a service", Q_NULLPTR));
 #endif // QT_NO_TOOLTIP
-        ok_button->setText(QApplication::translate("SocketsAppClass", "OK", 0));
-        cancel_button->setText(QApplication::translate("SocketsAppClass", "Cancel", 0));
+        ok_button->setText(QApplication::translate("SocketsAppClass", "OK", Q_NULLPTR));
+        cancel_button->setText(QApplication::translate("SocketsAppClass", "Cancel", Q_NULLPTR));
     } // retranslateUi
 
 };

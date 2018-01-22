@@ -8,9 +8,6 @@
 #include <WinSock2.h>
 #pragma comment(lib, "ws2_32.lib")
 
-//Remove for final
-#include <QDebug>
-
 #include "ui_SocketsApp.h"
 
 class SocketsApp : public QMainWindow

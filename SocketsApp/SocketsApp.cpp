@@ -1,3 +1,37 @@
+/*------------------------------------------------------------------------------------------------------------------
+-- SOURCE FILE: SocketsApp.cpp - An application that can perform a small set of TCP/IP lookups
+--
+-- PROGRAM: SocketsApp
+--
+-- FUNCTIONS:
+-- void connectButtons()
+-- void getHostFromIP()
+-- void getIPFromHost()
+-- void getPortFromService()
+-- void getServiceFromPort()
+-- void cancelClicked()
+-- void okClicked()
+-- void buttonsAndEditsUsable(bool yesNo, int num)
+-- void setActions(bool flag)
+-- 
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- NOTES:
+--	This application provides a graphical interface to perform 4 types of TCP/IP lookups using the WinSock2 API.
+--	The implemented lookups are:
+--	1. Take a user specified host name and resolve it into a IP address.
+--	2. Take a user specified a IP address resolve it into an host name(s).
+--	3. Take a user specified service name/protocol and resolve it into its port number.
+--	4. Take a user specified port number/protocol and resolve it into its service name.
+----------------------------------------------------------------------------------------------------------------------*/
+
 #include "SocketsApp.h"
 
 SocketsApp::SocketsApp(QWidget *parent)
@@ -15,7 +49,24 @@ SocketsApp::SocketsApp(QWidget *parent)
 }
 
 
-inline void SocketsApp::connectButtons()
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: connectButtons
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void connectButtons (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- This connects the various UI buttons to the actions that they are required to perform.
+----------------------------------------------------------------------------------------------------------------------*/inline void SocketsApp::connectButtons()
 {
 	connect(ui.actionIP_to_Host, &QAction::triggered, this, &SocketsApp::getHostFromIP);
 	connect(ui.actionHost_to_IP, &QAction::triggered, this, &SocketsApp::getIPFromHost);
@@ -25,6 +76,24 @@ inline void SocketsApp::connectButtons()
 	connect(ui.cancel_button, &QPushButton::clicked, this, &SocketsApp::cancelClicked);
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: getHostFromIP
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void getHostFromIP (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- Disables lookup type selection, enables input with hints, and sets the lookup type.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::getHostFromIP()
 {
 	//Make buttons clickable and lineedits not readonly
@@ -32,9 +101,26 @@ void SocketsApp::getHostFromIP()
 	setActions(false);
 	ui.input1->setText("Dotted IP");
 	selection = 1;
-	qDebug() << "Host from IP";
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: getIPFromHost
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void getIPFromHost (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- Disables lookup type selection, enables input with hints, and sets the lookup type.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::getIPFromHost()
 {
 	//Make buttons clickable and lineedits not readonly
@@ -42,9 +128,26 @@ void SocketsApp::getIPFromHost()
 	setActions(false);
 	ui.input1->setText("Host Name");
 	selection = 2;
-	qDebug() << "Host from IP";
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: getPortFromService
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void getPortFromService (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- Disables lookup type selection, enables input with hints, and sets the lookup type.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::getPortFromService()
 {
 	//Make buttons clickable and lineedits not readonly
@@ -53,9 +156,26 @@ void SocketsApp::getPortFromService()
 	ui.input1->setText("Service");
 	ui.input2->setText("Protocol");
 	selection = 3;
-	qDebug() << "Host from IP";
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: getServiceFromPort
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void getServiceFromPort (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- Disables lookup type selection, enables input with hints, and sets the lookup type.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::getServiceFromPort()
 {
 	//Make buttons clickable and lineedits not readonly
@@ -64,9 +184,26 @@ void SocketsApp::getServiceFromPort()
 	ui.input1->setText("Port");
 	ui.input2->setText("Protocol");
 	selection = 4;
-	qDebug() << "Host from IP";
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: cancelClicked
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void cancelClicked (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+-- Re-enables lookup type selection and disables input. Also clears input fields.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::cancelClicked()
 {
 	buttonsAndEditsUsable(false, 0);
@@ -75,6 +212,28 @@ void SocketsApp::cancelClicked()
 	ui.input2->setText("");
 }
 
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: okClicked
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void okClicked (void)
+--
+-- RETURNS: void.
+--
+-- NOTES:
+--	Uses the selection set in the 4 lookup type selection functions, and performs the appropriate lookup using the
+--	text in the input fields. Then appends the results of the lookup to the output text box. Finally, re-enables 
+--	lookup type selection, disables input, and clears input fields.
+--	Uses code from http://milliways.bcit.ca, written by Aman Abdulla, for the lookup steps.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::okClicked()
 {
 	buttonsAndEditsUsable(false, 0);
@@ -227,7 +386,7 @@ void SocketsApp::okClicked()
 		break;
 
 	default:
-		result = "An error has occured";
+		result = "An unknown error has occured";
 		break;
 	}
 	selection = 0;
@@ -245,6 +404,31 @@ void SocketsApp::okClicked()
 	ui.input1->setText("");
 	ui.input2->setText("");
 }
+
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: buttonsAndEditsUsable
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void buttonsAndEditsUsable (bool yesNo, int num)
+--						bool yesNo: If true, makes the input fields and buttons usable, otherwise, disables them.
+--									Ignored if num is set to 0.
+--						int num: Sets the mode, 
+--									0: Reset, yesNo is ignored, and all fields are set to unusable.
+--									1: One input, only the first line of input is used.
+--									2: Two inputs, both lines if the input are used.
+-- RETURNS: void.
+--
+-- NOTES:
+--	Enables the specified input fields, or resets (disables) them when 0 is selected. Also refreshes the the lineEdits
+--	so that styling takes effect.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::buttonsAndEditsUsable(bool yesNo, int num)
 {
 	if (num == 0)
@@ -275,6 +459,26 @@ void SocketsApp::buttonsAndEditsUsable(bool yesNo, int num)
 	
 }
 
+/*------------------------------------------------------------------------------------------------------------------
+-- FUNCTION: setActions
+--
+-- DATE: January 21, 2018
+--
+-- REVISIONS: None
+--
+-- DESIGNER: Tim Bruecker
+--
+-- PROGRAMMER: Tim Bruecker
+--
+-- INTERFACE: void setActions (bool flag)
+--						bool flag: 
+--							If true, makes lookup type selection buttons usable.
+--							If false, makes lookup type selection buttons unusable.
+-- RETURNS: void.
+--
+-- NOTES:
+--	Enables or disables lookup type selection to force user down specific path of execution.
+----------------------------------------------------------------------------------------------------------------------*/
 void SocketsApp::setActions(bool flag)
 {
 	ui.actionHost_to_IP->setEnabled(flag);
