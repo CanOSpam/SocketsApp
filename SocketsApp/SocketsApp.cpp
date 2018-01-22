@@ -66,7 +66,8 @@ SocketsApp::SocketsApp(QWidget *parent)
 --
 -- NOTES:
 -- This connects the various UI buttons to the actions that they are required to perform.
-----------------------------------------------------------------------------------------------------------------------*/inline void SocketsApp::connectButtons()
+----------------------------------------------------------------------------------------------------------------------*/
+inline void SocketsApp::connectButtons()
 {
 	connect(ui.actionIP_to_Host, &QAction::triggered, this, &SocketsApp::getHostFromIP);
 	connect(ui.actionHost_to_IP, &QAction::triggered, this, &SocketsApp::getIPFromHost);
@@ -357,7 +358,7 @@ void SocketsApp::okClicked()
 		sv = getservbyname(arg1.toStdString().c_str(), arg2.toStdString().c_str());
 		if (sv == NULL)
 		{
-			result = "An error has occured with port from service";
+			result = "An error has occurred with port from service";
 		}
 		else
 		{
@@ -375,7 +376,7 @@ void SocketsApp::okClicked()
 		sv = getservbyport(htons(s_port), arg2.toStdString().c_str());
 		if (sv == NULL)
 		{
-			result = "An error has occured with service from port";
+			result = "An error has occurred with service from port";
 		}
 		else
 		{
@@ -386,7 +387,7 @@ void SocketsApp::okClicked()
 		break;
 
 	default:
-		result = "An unknown error has occured";
+		result = "An unknown error has occurred";
 		break;
 	}
 	selection = 0;
